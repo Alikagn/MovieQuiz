@@ -9,43 +9,63 @@ final class MovieQuizViewController: UIViewController {
     //количество правильных ответов
     private var correctAnswers = 0
 
+    @IBOutlet private var textQueryLabel: UILabel!
+    @IBOutlet private var yesButton: UIButton!
+    @IBOutlet private var noButton: UIButton!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Установка шрифтов
+        textLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
+        counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        textQueryLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        //загружаем первый экран
         let currentQuestion = questions[currentQuestionIndex]
-        show(quiz: convert(model: currentQuestion))
-    }
+        showFirstScreen(quiz: convert(model: currentQuestion))
+      }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex] // 1
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
+        let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true // 2
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex] // 1
-        let givenAnswer = false // 2
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        
     }
     
     private func showNextQuestionOrResults() {
+        imageView.layer.borderColor = UIColor.clear.cgColor
+        
         if currentQuestionIndex == questions.count - 1 {
-            let text = "Ваш результат: \(correctAnswers)/10" // 1
-            let viewModel = QuizResultsViewModel( // 2
+            let text = "Ваш результат: \(correctAnswers)/10"
+            let viewModel = QuizResultsViewModel(
                     title: "Этот раунд окончен!",
                     text: text,
                     buttonText: "Сыграть ещё раз")
-                show(quiz: viewModel) // 3
+                show(quiz: viewModel)
+           
         } else {
             currentQuestionIndex += 1
-            
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
-             show(quiz: viewModel)
-        }
+             showFirstScreen(quiz: viewModel)
+           }
+        noButton.isEnabled = true
+        yesButton.isEnabled = true
     }
     
     private func showAnswerResult(isCorrect: Bool) {
@@ -56,6 +76,7 @@ final class MovieQuizViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
         }
+        
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -66,10 +87,12 @@ final class MovieQuizViewController: UIViewController {
         return questionStep
     }
     
-    private func show(quiz step: QuizStepViewModel) {
+    private func showFirstScreen(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
+        //noButton.isEnabled = true
+        //yesButton.isEnabled = true
     }
     
     private func show(quiz result: QuizResultsViewModel) {
@@ -83,7 +106,7 @@ final class MovieQuizViewController: UIViewController {
             
             let firstQuestion = questions[self.currentQuestionIndex] // 2
             let viewModel = self.convert(model: firstQuestion)
-            self.show(quiz: viewModel)
+            self.showFirstScreen(quiz: viewModel)
         }
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
