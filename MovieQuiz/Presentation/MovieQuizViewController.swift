@@ -13,7 +13,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private var currentQuestion: QuizQuestion?
     private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenterProtocol?
-    private var statisticService: StatisticService = StatisticService()
+    private let statisticService: StatisticServiceProtocol = StatisticService()
     
     @IBOutlet private var textQueryLabel: UILabel!
     @IBOutlet private var yesButton: UIButton!
@@ -66,7 +66,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         }
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        
     }
     
     private func showNextQuestionOrResults() {
@@ -74,17 +73,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         imageView.layer.borderColor = UIColor.clear.cgColor
         
         if currentQuestionIndex == questionsAmount - 1 {
-                    statisticService.store(correct: correctAnswers, total: questionsAmount)
+            statisticService.store(correct: correctAnswers, total: currentQuestionIndex + 1)
                     let quizCount = statisticService.gamesCount
                     let bestGame = statisticService.bestGame
-                    let formattedAccuracy = String(format: "%.0f%%", statisticService.totalAccuracy * 100)
+                    let formattedAccuracy = String(format: "%.2f", statisticService.totalAccuracy)
                     let text = """
                     Ваш результат: \(correctAnswers)/\(questionsAmount)
                     Количество сыгранных квизов: \(quizCount)
                     Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))
-                    Средняя точность: \(formattedAccuracy)
+                    Средняя точность: \(formattedAccuracy)%
                     """
-                    
                     let results = QuizResultsViewModel(
                         title: "Этот раунд окончен!",
                         text: text,
@@ -210,3 +208,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: НЕТ
 */
+
+//Всего правильных ответов: \(statisticService.correctAnswers)
+
+/*
+ // Получаем словарь всех значений
+ let allValues = UserDefaults.standard.dictionaryRepresentation()
+
+ // Получаем все ключи словаря, затем в цикле удаляем их
+ allValues.keys.forEach { key in
+     UserDefaults.standard.removeObject(forKey: key)
+ }
+ */
