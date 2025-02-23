@@ -50,10 +50,18 @@
 		2756B78B2D00DFB3001CE778 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				27C595572D23AD3000078547 /* YS Display */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		27C595572D23AD3000078547 /* YS Display */ = {
+			isa = PBXGroup;
+			children = (
 				2756B7832D00DF3D001CE778 /* YS Display-Bold.ttf */,
 				2756B7842D00DF3D001CE778 /* YS Display-Medium.ttf */,
 			);
-			path = Fonts;
+			path = "YS Display";
 			sourceTree = "<group>";
 		};
 		611342392B701CF6003FC2A4 /* Models */ = {
