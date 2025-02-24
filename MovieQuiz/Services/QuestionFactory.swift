@@ -5,7 +5,7 @@
 //  Created by Dmitry Batorevich on 05.01.2025.
 //
 
-import Foundation
+import UIKit
 
 final class QuestionFactory: QuestionFactoryProtocol {
     private let moviesLoader: MoviesLoading
@@ -36,7 +36,6 @@ final class QuestionFactory: QuestionFactoryProtocol {
          }
      }
     
-    
     func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
@@ -46,9 +45,8 @@ final class QuestionFactory: QuestionFactoryProtocol {
             do {
                 imageData = try Data(contentsOf: movie.resizedImageURL)
             } catch {
-                print("Failed to load image")
+                    print("Невозможно загрузить изображение")
             }
-            
             let rating = Float(movie.rating) ?? 0
             
             let text = "Рейтинг этого фильма больше чем 7?"
