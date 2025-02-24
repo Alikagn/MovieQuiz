@@ -8,9 +8,7 @@
 import UIKit
 
 final class StatisticService: StatisticServiceProtocol {
-    
     private let storage: UserDefaults = .standard
-    
     private enum Keys: String {
         case correctAnswers
         case gamesCount
@@ -21,21 +19,13 @@ final class StatisticService: StatisticServiceProtocol {
     }
     
     var gamesCount: Int {
-        get {
-            storage.integer(forKey: Keys.gamesCount.rawValue)
-        }
-        set {
-            storage.set(newValue, forKey: Keys.gamesCount.rawValue)
-        }
+        get {storage.integer(forKey: Keys.gamesCount.rawValue)}
+        set {storage.set(newValue, forKey: Keys.gamesCount.rawValue)}
     }
     
     var correctAnswers: Int {
-        get {
-            storage.integer(forKey: Keys.correctAnswers.rawValue)
-        }
-        set {
-            storage.set(newValue, forKey: Keys.correctAnswers.rawValue)
-        }
+        get {storage.integer(forKey: Keys.correctAnswers.rawValue)}
+        set {storage.set(newValue, forKey: Keys.correctAnswers.rawValue)}
     }
     
     var bestGame: GameResult {
@@ -53,13 +43,8 @@ final class StatisticService: StatisticServiceProtocol {
     }
     
     var totalAccuracy: Double {
-       
-        get {
-            storage.double(forKey: Keys.totalAccuracy.rawValue)
-        }
-        set {
-            storage.set(newValue, forKey: Keys.totalAccuracy.rawValue)
-        }
+        get {storage.double(forKey: Keys.totalAccuracy.rawValue)}
+        set {storage.set(newValue, forKey: Keys.totalAccuracy.rawValue)}
     }
     
     func store(correct count: Int, total amount: Int) {
