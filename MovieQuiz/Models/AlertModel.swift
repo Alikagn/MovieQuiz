@@ -8,12 +8,8 @@
 import UIKit
 
 struct AlertModel {
-   //заголовок алерта
     let title: String
-    //сообщение алерта
     let message: String
-    //текст кнопки алерта
     let buttonText: String
-    //Замыкание
     let buttonPress: (() -> Void)?
 }
